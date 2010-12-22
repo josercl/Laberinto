@@ -14,9 +14,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -33,7 +35,6 @@ import logic.Grafo;
 import logic.Nodo;
 
 public class Principal extends JFrame {
-//dev
 	private static final long serialVersionUID = 1L;
 	private JPanel tablero,solucion;
 	public JFileChooser chooser;
@@ -55,7 +56,7 @@ public class Principal extends JFrame {
 	
 	public Principal(){
 		super();
-		rb=Util.resource;
+		rb=ResourceBundle.getBundle("resources.textos",Locale.getDefault());
 		setTitle(rb.getString("laberinto"));
 		initComponents();
 	}
@@ -92,6 +93,7 @@ public class Principal extends JFrame {
 		});
 		
 		JMenuBar menubar=new JMenuBar();
+		
 		JMenu archivo=new JMenu(rb.getString("menu.archivo"));
 		archivo.setMnemonic(rb.getString("menu.achivo.mnemonic").charAt(0));
 		
@@ -166,6 +168,10 @@ public class Principal extends JFrame {
 		});
 		
 		menubar.add(archivo);
+		
+		menubar.add(Box.createHorizontalGlue());
+		
+		menubar.add(new JMenu(rb.getString("menu.ayuda")));
 		
 		setJMenuBar(menubar);
 		
