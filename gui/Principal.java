@@ -38,7 +38,6 @@ import logic.Grafo;
 import logic.Nodo;
 
 public class Principal extends JFrame {
-//dev
 	private static final long serialVersionUID = 1L;
 	private JPanel tablero,solucion;
 	public JFileChooser chooser;
