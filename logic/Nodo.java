@@ -37,7 +37,6 @@ public class Nodo implements Comparable<Nodo>{
 		return numero+"";
 	}
 
-	@Override
 	public int compareTo(Nodo o) {
 		return numero-o.getNumero();
 	}

@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -77,7 +80,6 @@ public class Principal extends JFrame {
 		bar.add(dibujar);bar.add(resolver);
 		
 		dibujar.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				solucion.getGraphics().clearRect(0,0,solucion.getWidth(),solucion.getHeight());
 				dibujarTablero();
@@ -85,7 +87,6 @@ public class Principal extends JFrame {
 		});
 		
 		resolver.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				resolver(inicio,fin);
 				dibujarTablero();
@@ -100,7 +101,6 @@ public class Principal extends JFrame {
 		JMenuItem cargar=new JMenuItem(rb.getString("menu.archivo.abrir_laberinto"));
 		cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
 		cargar.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				cargarLaberinto(false);
 			}
@@ -110,7 +110,6 @@ public class Principal extends JFrame {
 		JMenuItem nuevo_editor_item=new JMenuItem(rb.getString("menu.archivo.nuevo_laberinto"));
 		nuevo_editor_item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		nuevo_editor_item.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				mostrarEditor();
 			}
@@ -119,7 +118,6 @@ public class Principal extends JFrame {
 		
 		JMenuItem viejo_editor_item=new JMenuItem(rb.getString("menu.archivo.editar_laberinto"));
 		viejo_editor_item.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				cargarLaberinto(true);
 			}
@@ -132,10 +130,14 @@ public class Principal extends JFrame {
 			JMenuItem gmi=new JMenuItem(rb.getString("laberinto")+" "+i);
 			final int m=i;
 			gmi.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent e) {
-					File f=new File(Principal.class.getResource("/laberinto/lab"+m+".txt").getFile());
-					leerArchivo(f,false);
+					URL url=Principal.class.getResource("/laberinto/lab"+m+".txt");
+					try {
+						File f=new File(url.toURI());
+						leerArchivo(f,false);
+					} catch (URISyntaxException e1) {
+						e1.printStackTrace();
+					}
 				}
 			});
 			galeria_laberintos.add(gmi);
@@ -159,8 +161,6 @@ public class Principal extends JFrame {
 		salir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
 		archivo.add(salir);
 		salir.addActionListener(new ActionListener() {
-			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				System.exit(0);
@@ -244,7 +244,6 @@ public class Principal extends JFrame {
 		final int fn=fin;
 		
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 					Graphics g=solucion.getGraphics();
 					g.translate(margen,margen);

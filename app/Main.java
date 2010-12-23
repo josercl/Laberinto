@@ -14,7 +14,6 @@ public class Main{
 		Locale.setDefault(espanol);
 		
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 				Principal p=new Principal();
 			}

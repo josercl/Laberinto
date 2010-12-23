@@ -75,7 +75,7 @@ public class Editor extends JDialog implements MouseListener{
 
 		cerrar = new JButton(rb.getString("editor.toolbar.cerrar"));
 		cerrar.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				cerrar();
 			}
@@ -84,7 +84,7 @@ public class Editor extends JDialog implements MouseListener{
 		guardar = new JButton(rb.getString("editor.toolbar.guardar"));
 		guardar.addActionListener(new ActionListener() {
 
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				guardar();
 			}
@@ -97,7 +97,7 @@ public class Editor extends JDialog implements MouseListener{
 		JMenuItem inicio_item=new JMenuItem(rb.getString("editor.popupmenu.inicio"));
 		
 		inicio_item.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				establecerInicio(pop.getInvoker());
 			}
@@ -106,7 +106,7 @@ public class Editor extends JDialog implements MouseListener{
 		JMenuItem fin_item=new JMenuItem(rb.getString("editor.popupmenu.fin"));
 		
 		fin_item.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				establecerFin(pop.getInvoker());
 			}
@@ -171,7 +171,7 @@ public class Editor extends JDialog implements MouseListener{
 					abajo.setPreferredSize(new Dimension(ancho_casilla,ancho_alto_boton));
 
 					abajo.addActionListener(new ActionListener() {
-						@Override
+						
 						public void actionPerformed(ActionEvent e) {
 							boolean vecinoInf = casillas[fila][columna].tieneVecinoInf();
 							casillas[fila][columna].setVecinoInf(!vecinoInf);
@@ -204,7 +204,7 @@ public class Editor extends JDialog implements MouseListener{
 					derecha.setPreferredSize(new Dimension(ancho_alto_boton,alto_casilla));
 
 					derecha.addActionListener(new ActionListener() {
-						@Override
+						
 						public void actionPerformed(ActionEvent e) {
 							boolean vecinoDer = casillas[fila][columna].tieneVecinoDer();
 							casillas[fila][columna].setVecinoDer(!vecinoDer);
@@ -287,23 +287,23 @@ public class Editor extends JDialog implements MouseListener{
 		}
 	}
 
-	@Override
+	
 	public void mouseClicked(MouseEvent e) {}
 
-	@Override
+	
 	public void mousePressed(MouseEvent e) {
 		showPopup(e);
 	}
 
-	@Override
+	
 	public void mouseReleased(MouseEvent e) {
 		showPopup(e);
 	}
 
-	@Override
+	
 	public void mouseEntered(MouseEvent e) {}
 
-	@Override
+	
 	public void mouseExited(MouseEvent e) {}
 	
 	private void showPopup(MouseEvent e){
