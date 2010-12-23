@@ -132,7 +132,7 @@ public class Principal extends JFrame {
 			gmi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					URL url=Principal.class.getResource("/laberinto/lab"+m+".txt");
-					try {
+					try { 
 						File f=new File(url.toURI());
 						leerArchivo(f,false);
 					} catch (URISyntaxException e1) {
