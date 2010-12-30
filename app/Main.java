@@ -2,8 +2,6 @@ package app;
 
 import gui.Principal;
 
-import java.util.Locale;
-
 import javax.swing.SwingUtilities;
 
 public class Main{

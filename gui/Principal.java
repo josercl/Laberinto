@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +40,6 @@ import logic.Nodo;
 
 public class Principal extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel tablero,solucion;
 	private Tablero tableroPrint;
 	public JFileChooser chooser;
 	private Editor editor;
@@ -84,8 +82,9 @@ public class Principal extends JFrame {
 
 		dibujar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				solucion.getGraphics().clearRect(0,0,solucion.getWidth(),solucion.getHeight());
-				dibujarTablero();
+				tableroPrint.getPasos().removeAllElements();
+				//dibujarTablero();
+				repaint();
 			}
 		});
 
@@ -184,19 +183,11 @@ public class Principal extends JFrame {
 
 		getContentPane().add(bar,BorderLayout.NORTH);
 
-		tablero=new JPanel();
-		tablero.setSize(screen);
-		tablero.setBackground(Color.white);
-
-		solucion=new JPanel();
-		solucion.setOpaque(false);
-		solucion.setSize(screen);
-
-		JLayeredPane layers = new JLayeredPane();
-		layers.add(solucion, new Integer(1));
-		layers.add(tablero, new Integer(123));
-
-		getContentPane().add(layers,BorderLayout.CENTER);
+		tableroPrint=new Tablero();
+		tableroPrint.setSize(screen);
+		tableroPrint.setOpaque(false);
+		
+		getContentPane().add(tableroPrint,BorderLayout.CENTER);
 
 		chooser=new JFileChooser();
 
@@ -210,45 +201,34 @@ public class Principal extends JFrame {
 
 	public void dibujarTablero(){
 		if(nodos!=null){
-			Graphics g=tablero.getGraphics();
 			tableroPrint.getLineas().removeAllElements();
-			g.translate(margen,margen);
 			for(int fila=0;fila<filas;fila++){
 				for(int columna=0;columna<columnas;columna++){
-					g.setColor(Color.black);
 					int numero=columna+fila*columnas;
 					//lineas horizontales
-					g.drawLine(columna*ancho_celda, 0, (columna+1)*ancho_celda, 0);
 					tableroPrint.agregarLinea(columna*ancho_celda, 0, (columna+1)*ancho_celda, 0);
 					if((fila>0 && nodos[numero][numero-columnas]==0)){
-						g.drawLine(columna*ancho_celda, fila*alto_celda, (columna+1)*ancho_celda, fila*alto_celda);
 						tableroPrint.agregarLinea(columna*ancho_celda, fila*alto_celda, (columna+1)*ancho_celda, fila*alto_celda);
 					}
-					g.drawLine(columna*ancho_celda, (filas)*alto_celda, (columna+1)*ancho_celda, (filas)*alto_celda);
 					tableroPrint.agregarLinea(columna*ancho_celda, (filas)*alto_celda, (columna+1)*ancho_celda, (filas)*alto_celda);
 
 					//lineas verticales
-					g.drawLine(0,fila*alto_celda,0,(fila+1)*alto_celda);
 					tableroPrint.agregarLinea(0,fila*alto_celda,0,(fila+1)*alto_celda);
 					if(columna>0 && nodos[numero][numero-1]==0){
-						g.drawLine(columna*ancho_celda,fila*alto_celda,columna*ancho_celda,(fila+1)*alto_celda);
 						tableroPrint.agregarLinea(columna*ancho_celda,fila*alto_celda,columna*ancho_celda,(fila+1)*alto_celda);
 					}
-					g.drawLine(columnas*ancho_celda,fila*alto_celda,columnas*ancho_celda,(fila+1)*alto_celda);
 					tableroPrint.agregarLinea(columnas*ancho_celda,fila*alto_celda,columnas*ancho_celda,(fila+1)*alto_celda);
-
-
-					if(numero==inicio){
-						g.setColor(Util.inicioColor);
-						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
-					}
-					if(numero==fin){
-						g.setColor(Util.finColor);
-						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
-					}
+					
+//					if(numero==inicio){
+//						g.setColor(Util.inicioColor);
+//						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
+//					}
+//					if(numero==fin){
+//						g.setColor(Util.finColor);
+//						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
+//					}
 				}
 			}
-			g.translate(0,0);
 		}
 	}
 
@@ -260,33 +240,33 @@ public class Principal extends JFrame {
 		new Thread(new Runnable() {
 			
 			public void run() {
-					Graphics g=solucion.getGraphics();
-					g.translate(margen,margen);
+				Vector<Nodo> resultado=grafo.DFS(in, fn);
 
-					Vector<Nodo> resultado=grafo.DFS(in, fn);
+				if(resultado!=null){
+					for(int i=resultado.size()-1;i>=0;i--){
+						int numero=resultado.get(i).getNumero();
 
-					if(resultado!=null){
-						for(int i=resultado.size()-1;i>=0;i--){
-							int numero=resultado.get(i).getNumero();
+						int fila=numero/columnas;
+						int columna=numero%columnas;
 
-							int fila=numero/columnas;
-							int columna=numero%columnas;
+//							g.setColor(Color.green);
+//							g.fillRect(columna*ancho_celda, fila*ancho_celda, ancho_celda, alto_celda);
+						
+						tableroPrint.agregarPaso(columna*ancho_celda, fila*ancho_celda, ancho_celda, alto_celda);
+						
+						tableroPrint.repaint();
+						//dibujarTablero();
 
-							g.setColor(Color.green);
-							g.fillRect(columna*ancho_celda, fila*ancho_celda, ancho_celda, alto_celda);
-							dibujarTablero();
-
-							try {
-								Thread.sleep(67);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+						try {
+							Thread.sleep(67);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					}else{
-						JOptionPane.showMessageDialog(p, rb.getString("mensajes.no_solucion"));
 					}
-					g.translate(0,0);
+				}else{
+					JOptionPane.showMessageDialog(p, rb.getString("mensajes.no_solucion"));
+				}
 			}
 		}).start();
 	}
@@ -300,7 +280,7 @@ public class Principal extends JFrame {
 	}
 
 	protected void leerArchivo(File archivo,boolean abrirEditor){
-		tablero.getGraphics().clearRect(0, 0, tablero.getWidth(), tablero.getHeight());
+		//tablero.getGraphics().clearRect(0, 0, tablero.getWidth(), tablero.getHeight());
 		String linea="";
 		BufferedReader br;
 		grafo=new Grafo();
@@ -332,9 +312,7 @@ public class Principal extends JFrame {
 					nuevo.getVecinos().add(vecinoTemp);
 				}
 			}
-			tableroPrint=new Tablero();
 		} catch (FileNotFoundException e) {
-
 			Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_existe", new Object[]{archivo.getName()}));
 		} catch (NumberFormatException e) {
 			Util.mostrarMensaje(this,rb.getString("mensajes.error.archivo_sintaxis"));
@@ -379,12 +357,12 @@ public class Principal extends JFrame {
 	private void imprimir(){
 		PrinterJob pj = PrinterJob.getPrinterJob();
 		pj.setJobName(" Print Component ");
-
 		pj.setPrintable(new Printable() {
 			public int print(Graphics pg, PageFormat pf, int pageNum) {
 				if (pageNum > 0) {
 					return Printable.NO_SUCH_PAGE;
 				}
+				pf.setOrientation(PageFormat.LANDSCAPE);
 
 //				Graphics2D g2 = (Graphics2D) pg;
 //				g2.translate(pf.getImageableX(), pf.getImageableY());
