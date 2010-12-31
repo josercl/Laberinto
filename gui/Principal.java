@@ -1,9 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +26,10 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
@@ -48,8 +46,8 @@ public class Principal extends JFrame {
 	private final int alto=400;
 
 	final int margen=20;
-	final int ancho_celda=20; //ancho de cada "celda" del laberinto
-	final int alto_celda=20; //alto de cada "celda" del laberinto
+	int ancho_celda=20; //ancho de cada "celda" del laberinto
+	int alto_celda=20; //alto de cada "celda" del laberinto
 
 	private boolean pintarLaberinto=false;
 	int inicio,fin,filas,columnas,nodos[][];
@@ -57,6 +55,10 @@ public class Principal extends JFrame {
 	private ResourceBundle rb=null;
 
 	Grafo grafo;
+	private JToolBar bar;
+	
+	Toolkit tk=Toolkit.getDefaultToolkit();
+	Dimension screen=tk.getScreenSize();
 
 	public Principal(){
 		super();
@@ -70,10 +72,7 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
-		Toolkit tk=Toolkit.getDefaultToolkit();
-		Dimension screen=tk.getScreenSize();
-
-		JToolBar bar=new JToolBar();
+		bar=new JToolBar();
 		bar.setFloatable(false);
 		dibujar=new JButton(rb.getString("toolbar.dibujar"));
 		resolver=new JButton(rb.getString("toolbar.resolver"));
@@ -201,7 +200,12 @@ public class Principal extends JFrame {
 
 	public void dibujarTablero(){
 		if(nodos!=null){
-			tableroPrint.getLineas().removeAllElements();
+			tableroPrint.limpiar();
+			tableroPrint.repaint();
+			
+			ancho_celda=tableroPrint.getWidth()/columnas;
+			alto_celda=tableroPrint.getHeight()/filas;
+			
 			for(int fila=0;fila<filas;fila++){
 				for(int columna=0;columna<columnas;columna++){
 					int numero=columna+fila*columnas;
@@ -219,14 +223,12 @@ public class Principal extends JFrame {
 					}
 					tableroPrint.agregarLinea(columnas*ancho_celda,fila*alto_celda,columnas*ancho_celda,(fila+1)*alto_celda);
 					
-//					if(numero==inicio){
-//						g.setColor(Util.inicioColor);
-//						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
-//					}
-//					if(numero==fin){
-//						g.setColor(Util.finColor);
-//						g.fillArc(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5,10,10,0,360);
-//					}
+					if(numero==inicio){
+						tableroPrint.setInicio(new Circulo(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5));
+					}
+					if(numero==fin){
+						tableroPrint.setFin(new Circulo(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5));
+					}
 				}
 			}
 		}
@@ -248,11 +250,8 @@ public class Principal extends JFrame {
 
 						int fila=numero/columnas;
 						int columna=numero%columnas;
-
-//							g.setColor(Color.green);
-//							g.fillRect(columna*ancho_celda, fila*ancho_celda, ancho_celda, alto_celda);
 						
-						tableroPrint.agregarPaso(columna*ancho_celda, fila*ancho_celda, ancho_celda, alto_celda);
+						tableroPrint.agregarPaso(columna*ancho_celda, fila*alto_celda, ancho_celda, alto_celda);
 						
 						tableroPrint.repaint();
 						//dibujarTablero();
@@ -356,7 +355,7 @@ public class Principal extends JFrame {
 
 	private void imprimir(){
 		PrinterJob pj = PrinterJob.getPrinterJob();
-		pj.setJobName(" Print Component ");
+		pj.setJobName("Laberinto");
 		pj.setPrintable(new Printable() {
 			public int print(Graphics pg, PageFormat pf, int pageNum) {
 				if (pageNum > 0) {
@@ -364,15 +363,15 @@ public class Principal extends JFrame {
 				}
 				pf.setOrientation(PageFormat.LANDSCAPE);
 
-//				Graphics2D g2 = (Graphics2D) pg;
-//				g2.translate(pf.getImageableX(), pf.getImageableY());
+				Graphics2D g2 = (Graphics2D) pg;
+				g2.translate(pf.getImageableX(), pf.getImageableY());
 				tableroPrint.paint(pg);
 				return Printable.PAGE_EXISTS;
 			}
 		});
-		if (pj.printDialog() == false)
+		if (!pj.printDialog()){
 			return;
-
+		}
 		try {
 			pj.print();
 		} catch (PrinterException ex) {

@@ -11,6 +11,8 @@ public class Tablero extends JPanel {
 
 	private Vector<Linea> lineas;
 	private Vector<Paso> pasos;
+	private Circulo inicio;
+	private Circulo fin;
 	
 	public Tablero(){
 		super();
@@ -37,7 +39,7 @@ public class Tablero extends JPanel {
 	public void paint(Graphics g){
 		super.paint(g);
 		
-		g.translate(Util.margen, Util.margen);
+		//g.translate(Util.margen, Util.margen);
 		
 		g.setColor(Color.green);
 		for(Paso p:pasos){
@@ -48,7 +50,18 @@ public class Tablero extends JPanel {
 		for(Linea l:lineas){
 			g.drawLine(l.x1, l.y1, l.x2, l.y2);
 		}
-		g.translate(0,0);
+		
+		if(inicio!=null){
+			g.setColor(Util.inicioColor);
+			g.fillArc(inicio.xcentro,inicio.ycentro,10,10,0,360);
+		}
+		
+		if(fin!=null){
+			g.setColor(Util.finColor);
+			g.fillArc(fin.xcentro,fin.ycentro,10,10,0,360);
+		}
+		
+		//g.translate(0,0);
 	}
 
 	public Vector<Linea> getLineas() {
@@ -66,6 +79,29 @@ public class Tablero extends JPanel {
 	public void setPasos(Vector<Paso> pasos) {
 		this.pasos = pasos;
 	}
+
+	public Circulo getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Circulo inicio) {
+		this.inicio = inicio;
+	}
+
+	public Circulo getFin() {
+		return fin;
+	}
+
+	public void setFin(Circulo fin) {
+		this.fin = fin;
+	}
+
+	public void limpiar() {
+		lineas.removeAllElements();
+		pasos.removeAllElements();
+		setInicio(null);
+		setFin(null);
+	}
 }
 
 class Linea{
@@ -81,5 +117,13 @@ class Linea{
 class Paso extends Linea{
 	public Paso(int x1,int y1,int ancho,int alto){
 		super(x1, y1, ancho, alto);
+	}
+}
+
+class Circulo{
+	public int xcentro,ycentro;
+	public Circulo(int xc,int yc){
+		this.xcentro=xc;
+		this.ycentro=yc;
 	}
 }
