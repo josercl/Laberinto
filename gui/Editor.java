@@ -28,7 +28,7 @@ import javax.swing.JToolBar;
 import logic.Casilla;
 import logic.Grafo;
 import logic.Nodo;
-
+@SuppressWarnings("serial")
 public class Editor extends JDialog implements MouseListener{
 
 	private int filas, columnas, inicio = -1, fin = -1;

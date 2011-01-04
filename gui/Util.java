@@ -16,6 +16,7 @@ public class Util {
 	public static final int margen = 20;
 	public static final int ancho_celda = 20; // ancho de cada "celda" del laberinto
 	public static final int alto_celda = 20; // alto de cada "celda" del laberinto
+	public static final int radio_punto=new Float(ancho_celda*.2).intValue();
 	
 	public static void mostrarMensaje(Component parent,String s){
 		JOptionPane.showMessageDialog(parent, s, "Error", JOptionPane.ERROR_MESSAGE);

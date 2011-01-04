@@ -42,12 +42,11 @@ public class Principal extends JFrame {
 	public JFileChooser chooser;
 	private Editor editor;
 	private JButton resolver,dibujar;
-	private final int ancho=400;
-	private final int alto=400;
 
 	final int margen=20;
-	int ancho_celda=20; //ancho de cada "celda" del laberinto
-	int alto_celda=20; //alto de cada "celda" del laberinto
+	int ancho_celda=Util.ancho_celda; //ancho de cada "celda" del laberinto
+	int alto_celda=Util.alto_celda; //alto de cada "celda" del laberinto
+	int radio_punto=Util.radio_punto;
 
 	private boolean pintarLaberinto=false;
 	int inicio,fin,filas,columnas,nodos[][];
@@ -184,7 +183,6 @@ public class Principal extends JFrame {
 
 		tableroPrint=new Tablero();
 		tableroPrint.setSize(screen);
-		tableroPrint.setOpaque(false);
 		
 		getContentPane().add(tableroPrint,BorderLayout.CENTER);
 
@@ -205,6 +203,7 @@ public class Principal extends JFrame {
 			
 			ancho_celda=tableroPrint.getWidth()/columnas;
 			alto_celda=tableroPrint.getHeight()/filas;
+			radio_punto=ancho_celda/8;
 			
 			for(int fila=0;fila<filas;fila++){
 				for(int columna=0;columna<columnas;columna++){
@@ -224,10 +223,10 @@ public class Principal extends JFrame {
 					tableroPrint.agregarLinea(columnas*ancho_celda,fila*alto_celda,columnas*ancho_celda,(fila+1)*alto_celda);
 					
 					if(numero==inicio){
-						tableroPrint.setInicio(new Circulo(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5));
+						tableroPrint.setInicio(new Circulo(columna*ancho_celda+(ancho_celda/2)-radio_punto,fila*alto_celda+(alto_celda/2)-radio_punto,radio_punto));
 					}
 					if(numero==fin){
-						tableroPrint.setFin(new Circulo(columna*ancho_celda+(ancho_celda/2)-5,fila*alto_celda+(alto_celda/2)-5));
+						tableroPrint.setFin(new Circulo(columna*ancho_celda+(ancho_celda/2)-radio_punto,fila*alto_celda+(alto_celda/2)-radio_punto,radio_punto));
 					}
 				}
 			}
@@ -254,10 +253,9 @@ public class Principal extends JFrame {
 						tableroPrint.agregarPaso(columna*ancho_celda, fila*alto_celda, ancho_celda, alto_celda);
 						
 						tableroPrint.repaint();
-						//dibujarTablero();
 
 						try {
-							Thread.sleep(67);
+							Thread.sleep(38);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -362,7 +360,7 @@ public class Principal extends JFrame {
 					return Printable.NO_SUCH_PAGE;
 				}
 				pf.setOrientation(PageFormat.LANDSCAPE);
-
+				
 				Graphics2D g2 = (Graphics2D) pg;
 				g2.translate(pf.getImageableX(), pf.getImageableY());
 				tableroPrint.paint(pg);
@@ -375,7 +373,7 @@ public class Principal extends JFrame {
 		try {
 			pj.print();
 		} catch (PrinterException ex) {
-			// handle exception
+			ex.printStackTrace();
 		}
 
 	}

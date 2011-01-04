@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.util.Vector;
 
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
+@SuppressWarnings("serial")
 public class Tablero extends JPanel {
 
 	private Vector<Linea> lineas;
@@ -18,6 +18,7 @@ public class Tablero extends JPanel {
 		super();
 		lineas=new Vector<Linea>(0);
 		pasos=new Vector<Paso>(0);
+		setBackground(Color.white);
 	}
 	
 	public void agregarLinea(Linea l){
@@ -53,12 +54,12 @@ public class Tablero extends JPanel {
 		
 		if(inicio!=null){
 			g.setColor(Util.inicioColor);
-			g.fillArc(inicio.xcentro,inicio.ycentro,10,10,0,360);
+			g.fillArc(inicio.xcentro,inicio.ycentro,2*inicio.radio,2*inicio.radio,0,360);
 		}
 		
 		if(fin!=null){
 			g.setColor(Util.finColor);
-			g.fillArc(fin.xcentro,fin.ycentro,10,10,0,360);
+			g.fillArc(fin.xcentro,fin.ycentro,2*inicio.radio,2*inicio.radio,0,360);
 		}
 		
 		//g.translate(0,0);
@@ -121,9 +122,10 @@ class Paso extends Linea{
 }
 
 class Circulo{
-	public int xcentro,ycentro;
-	public Circulo(int xc,int yc){
+	public int xcentro,ycentro,radio;
+	public Circulo(int xc,int yc,int radio){
 		this.xcentro=xc;
 		this.ycentro=yc;
+		this.radio=radio;
 	}
 }
