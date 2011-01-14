@@ -7,8 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -20,28 +18,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
+import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.NumberFormatter;
 
 import logic.Generador;
 import logic.Grafo;
@@ -54,7 +44,6 @@ public class Principal extends JFrame {
 	public JFileChooser chooser;
 	private Editor editor;
 	private JButton resolver,dibujar;
-	private JSpinner filasGenerar,columnasGenerar;
 
 	final int margen=20;
 	int ancho_celda=Util.ancho_celda; //ancho de cada "celda" del laberinto
@@ -74,7 +63,7 @@ public class Principal extends JFrame {
 
 	public Principal(){
 		super();
-		rb=Util.resource;
+		rb=Util.resource;	
 		setTitle(rb.getString("laberinto"));
 		initComponents();
 	}
@@ -90,9 +79,6 @@ public class Principal extends JFrame {
 		resolver=new JButton(rb.getString("toolbar.resolver"));
 		JButton generar_btn=new JButton(rb.getString("menu.archivo.generar_laberinto"));
 
-		filasGenerar=new JSpinner(new SpinnerNumberModel(20, 20, 75, 1));
-		columnasGenerar=new JSpinner(new SpinnerNumberModel(20, 20, 75, 1));
-		
 		bar.add(dibujar);bar.add(resolver);bar.add(generar_btn);
 
 		dibujar.addActionListener(new ActionListener() {
@@ -229,7 +215,7 @@ public class Principal extends JFrame {
 		generador=new Generador(this, 0, 0);
 		
 		setVisible(true);
-		//setExtendedState(MAXIMIZED_BOTH);
+		setExtendedState(MAXIMIZED_BOTH);
 	}
 
 	public void dibujarTablero(){

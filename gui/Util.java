@@ -25,16 +25,14 @@ public class Util {
 												// laberinto
 	public static final int alto_celda = 20; // alto de cada "celda" del
 												// laberinto
-	public static final int radio_punto = new Float(ancho_celda * .2)
-			.intValue();
+	public static final int radio_punto = new Float(ancho_celda * .2).intValue();
 
 	public static void mostrarMensaje(Component parent, String s) {
 		JOptionPane.showMessageDialog(parent, s, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	public static ResourceBundle resource = ResourceBundle.getBundle(
-			"resources.textos", Locale.getDefault());
+	public static ResourceBundle resource = ResourceBundle.getBundle("resources.textos", Locale.getDefault());
 
 	private static MessageFormat formatter = new MessageFormat("");
 

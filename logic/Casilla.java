@@ -1,5 +1,11 @@
 package logic;
 
+/**
+ * 
+ * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @since 1.6
+ *
+ */
 public class Casilla implements Comparable<Casilla>{
 
 	private int numero;
