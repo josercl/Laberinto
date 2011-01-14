@@ -1,9 +1,6 @@
 package logic;
 
-import java.util.Calendar;
-
-
-public class Casilla {
+public class Casilla implements Comparable<Casilla>{
 
 	private int numero;
 	private boolean vecinoSup,vecinoInf,vecinoIzq,vecinoDer;
@@ -14,6 +11,10 @@ public class Casilla {
 		this.vecinoInf=false;
 		this.vecinoIzq=false;
 		this.vecinoDer=false;
+	}
+	
+	public boolean equals(Casilla c){
+		return this.numero==c.getNumero();
 	}
 
 	public int getNumero() {
@@ -54,5 +55,14 @@ public class Casilla {
 
 	public void setVecinoDer(boolean vecinoDer) {
 		this.vecinoDer = vecinoDer;
-	}	
+	}
+
+	public int compareTo(Casilla c) {
+		return this.numero-c.getNumero();
+	}
+	
+	public String toString(){
+		return this.numero+"";
+	}
+	
 }

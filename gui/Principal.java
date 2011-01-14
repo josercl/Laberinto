@@ -20,28 +20,41 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.FieldPosition;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.NumberFormatter;
 
+import logic.Generador;
 import logic.Grafo;
 import logic.Nodo;
 
 public class Principal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Tablero tableroPrint;
+	private Generador generador;
 	public JFileChooser chooser;
 	private Editor editor;
 	private JButton resolver,dibujar;
+	private JSpinner filasGenerar,columnasGenerar;
 
 	final int margen=20;
 	int ancho_celda=Util.ancho_celda; //ancho de cada "celda" del laberinto
@@ -75,8 +88,12 @@ public class Principal extends JFrame {
 		bar.setFloatable(false);
 		dibujar=new JButton(rb.getString("toolbar.dibujar"));
 		resolver=new JButton(rb.getString("toolbar.resolver"));
+		JButton generar_btn=new JButton(rb.getString("menu.archivo.generar_laberinto"));
 
-		bar.add(dibujar);bar.add(resolver);
+		filasGenerar=new JSpinner(new SpinnerNumberModel(20, 20, 75, 1));
+		columnasGenerar=new JSpinner(new SpinnerNumberModel(20, 20, 75, 1));
+		
+		bar.add(dibujar);bar.add(resolver);bar.add(generar_btn);
 
 		dibujar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -93,13 +110,19 @@ public class Principal extends JFrame {
 				dibujarTablero();
 			}
 		});
-
+		
+		generar_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				generar();
+			}
+		});
+			
 		JMenuBar menubar=new JMenuBar();
 		JMenu archivo=new JMenu(rb.getString("menu.archivo"));
 		archivo.setMnemonic(rb.getString("menu.achivo.mnemonic").charAt(0));
 
 		JMenuItem cargar=new JMenuItem(rb.getString("menu.archivo.abrir_laberinto"));
-		cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
+		cargar.setAccelerator(KeyStroke.getKeyStroke(rb.getString("menu.archivo.abrir_laberinto.accelerator")));
 		cargar.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -109,7 +132,7 @@ public class Principal extends JFrame {
 		archivo.add(cargar);
 
 		JMenuItem nuevo_editor_item=new JMenuItem(rb.getString("menu.archivo.nuevo_laberinto"));
-		nuevo_editor_item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		nuevo_editor_item.setAccelerator(KeyStroke.getKeyStroke(rb.getString("menu.archivo.nuevo_laberinto.accelerator")));
 		nuevo_editor_item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -129,6 +152,17 @@ public class Principal extends JFrame {
 
 		JMenu galeria_laberintos=new JMenu(rb.getString("menu.archivo.galeria"));
 
+		JMenuItem generar=new JMenuItem(rb.getString("menu.archivo.generar_laberinto"));
+		generar.setAccelerator(KeyStroke.getKeyStroke(rb.getString("menu.archivo.generar_laberinto.accelerator")));
+		generar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				generar();
+			}
+		});
+		
+		galeria_laberintos.add(generar);
+		galeria_laberintos.addSeparator();
+		
 		for(int i=1;i<=5;i++){
 			JMenuItem gmi=new JMenuItem(rb.getString("laberinto")+" "+i);
 			final int m=i;
@@ -157,14 +191,14 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-		mntmImprimir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+		mntmImprimir.setAccelerator(KeyStroke.getKeyStroke(rb.getString("menu.archivo.imprimir.accelerator")));
 		archivo.add(mntmImprimir);
 		archivo.add(galeria_laberintos);
 
 		archivo.addSeparator();
 		JMenuItem salir=new JMenuItem(rb.getString("menu.archivo.salir"));
 		salir.setMnemonic(rb.getString("menu.archivo.salir_mnemonic").charAt(0));
-		salir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
+		salir.setAccelerator(KeyStroke.getKeyStroke(rb.getString("menu.archivo.salir.accelerator")));
 		archivo.add(salir);
 		salir.addActionListener(new ActionListener() {
 
@@ -192,8 +226,10 @@ public class Principal extends JFrame {
 		int alv=400;
 		setBounds((screen.width-av)/2,(screen.height-alv)/2,av,alv);
 
+		generador=new Generador(this, 0, 0);
+		
 		setVisible(true);
-		setExtendedState(MAXIMIZED_BOTH);
+		//setExtendedState(MAXIMIZED_BOTH);
 	}
 
 	public void dibujarTablero(){
@@ -237,10 +273,11 @@ public class Principal extends JFrame {
 		final JFrame p=this;
 		final int in=inicio;
 		final int fn=fin;
-
+		final Principal parent=this;
 		new Thread(new Runnable() {
 			
 			public void run() {
+				
 				Vector<Nodo> resultado=grafo.DFS(in, fn);
 
 				if(resultado!=null){
@@ -276,7 +313,7 @@ public class Principal extends JFrame {
 		}
 	}
 
-	protected void leerArchivo(File archivo,boolean abrirEditor){
+	public void leerArchivo(File archivo,boolean abrirEditor){
 		//tablero.getGraphics().clearRect(0, 0, tablero.getWidth(), tablero.getHeight());
 		String linea="";
 		BufferedReader br;
@@ -327,15 +364,26 @@ public class Principal extends JFrame {
 	}
 
 	private void mostrarEditor(){
+		int[][] datos=preguntarFilasColumnas();
+		if(datos!=null){
+			editor=new Editor(this,datos[0][0], datos[0][1]);
+			editor.setVisible(true);
+		}
+	}
+	
+	private int[][] preguntarFilasColumnas(){
 		String cString,fString=JOptionPane.showInputDialog (rb.getString("editor.prompt.filas"), "2");
 		int filas=2;
 		int columnas=2;
+		int[][] resultados=new int[1][2];
 		boolean error=false;
 		try{
 			filas=Integer.parseInt(fString);
+			resultados[0][0]=filas;
 			try{
 				cString=JOptionPane.showInputDialog(rb.getString("editor.prompt.columnas"), "2");
 				columnas=Integer.parseInt(cString);
+				resultados[0][1]=columnas;
 			}catch(NumberFormatException nfe){
 				error=true;
 				JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_columnas"),"Error",JOptionPane.ERROR_MESSAGE);
@@ -344,11 +392,10 @@ public class Principal extends JFrame {
 			error=true;
 			JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_filas"),"Error",JOptionPane.ERROR_MESSAGE);
 		}
-
-		if(!error){
-			editor=new Editor(this,filas, columnas);
-			editor.setVisible(true);
+		if(error){
+			resultados=null;
 		}
+		return resultados;
 	}
 
 	private void imprimir(){
@@ -378,6 +425,15 @@ public class Principal extends JFrame {
 
 	}
 
+	private void generar(){
+		int[][]datos=preguntarFilasColumnas();
+		if(datos!=null){
+			generador.setFilas(datos[0][0]);
+			generador.setColumnas(datos[0][1]);
+			generador.init();
+			generador.generar();
+		}
+	}
 	
 	public void paint(Graphics g) {
 		super.paint(g);
