@@ -28,7 +28,7 @@ import javax.swing.JToolBar;
 import logic.Casilla;
 import logic.Grafo;
 import logic.Nodo;
-
+@SuppressWarnings("serial")
 public class Editor extends JDialog implements MouseListener{
 
 	private int filas, columnas, inicio = -1, fin = -1;
@@ -75,7 +75,7 @@ public class Editor extends JDialog implements MouseListener{
 
 		cerrar = new JButton(rb.getString("editor.toolbar.cerrar"));
 		cerrar.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				cerrar();
 			}
@@ -84,7 +84,7 @@ public class Editor extends JDialog implements MouseListener{
 		guardar = new JButton(rb.getString("editor.toolbar.guardar"));
 		guardar.addActionListener(new ActionListener() {
 
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				guardar();
 			}
@@ -97,7 +97,7 @@ public class Editor extends JDialog implements MouseListener{
 		JMenuItem inicio_item=new JMenuItem(rb.getString("editor.popupmenu.inicio"));
 		
 		inicio_item.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				establecerInicio(pop.getInvoker());
 			}
@@ -106,7 +106,7 @@ public class Editor extends JDialog implements MouseListener{
 		JMenuItem fin_item=new JMenuItem(rb.getString("editor.popupmenu.fin"));
 		
 		fin_item.addActionListener(new ActionListener() {
-			@Override
+			
 			public void actionPerformed(ActionEvent e) {
 				establecerFin(pop.getInvoker());
 			}
@@ -130,11 +130,11 @@ public class Editor extends JDialog implements MouseListener{
 		Nodo actual=null;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				casillas[i][j] = new Casilla(i * columnas + j);
+				numeroNodo=i*columnas+j;
+				
+				casillas[i][j] = new Casilla(numeroNodo);
 
 				casillaPanel = new JPanel(new BorderLayout());
-				
-				numeroNodo=i*columnas+j;
 				
 				if(this.inicio==numeroNodo){
 					casillaPanel.setBackground(Util.inicioColor);
@@ -147,7 +147,7 @@ public class Editor extends JDialog implements MouseListener{
 					actual=grafo.obtenerNodo(numeroNodo);
 				}
 				
-				casillaPanel.add(new JLabel(numeroNodo+"",JLabel.CENTER),BorderLayout.CENTER);
+				casillaPanel.add(new JLabel("",JLabel.CENTER),BorderLayout.CENTER);
 				
 				casillaPanel.addMouseListener(this);
 
@@ -171,7 +171,7 @@ public class Editor extends JDialog implements MouseListener{
 					abajo.setPreferredSize(new Dimension(ancho_casilla,ancho_alto_boton));
 
 					abajo.addActionListener(new ActionListener() {
-						@Override
+						
 						public void actionPerformed(ActionEvent e) {
 							boolean vecinoInf = casillas[fila][columna].tieneVecinoInf();
 							casillas[fila][columna].setVecinoInf(!vecinoInf);
@@ -204,7 +204,7 @@ public class Editor extends JDialog implements MouseListener{
 					derecha.setPreferredSize(new Dimension(ancho_alto_boton,alto_casilla));
 
 					derecha.addActionListener(new ActionListener() {
-						@Override
+						
 						public void actionPerformed(ActionEvent e) {
 							boolean vecinoDer = casillas[fila][columna].tieneVecinoDer();
 							casillas[fila][columna].setVecinoDer(!vecinoDer);
@@ -237,73 +237,30 @@ public class Editor extends JDialog implements MouseListener{
 		int opcion = parent.chooser.showSaveDialog(this);
 		if (opcion == JFileChooser.APPROVE_OPTION) {
 			File archivo = parent.chooser.getSelectedFile();
-			if (!archivo.isFile()) {
-				try {
-					if (!archivo.createNewFile()) {
-						Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_crear", new Object[]{archivo.getName()}));
-					}
-				} catch (IOException e) {
-					Util.mostrarMensaje(this, Util.mensajes("mensajes.error.archivo_no_crear",new Object[]{archivo.getName()}));
-				}
-			}
-			if (archivo.canWrite()) {
-				Casilla c = null;
-				try {
-
-					PrintStream ps = new PrintStream(new FileOutputStream(archivo));
-					ps.println(filas);
-					ps.println(columnas);
-					ps.println(inicio);
-					ps.println(fin);
-					String str=null;
-					for (int i = 0; i < filas; i++) {
-						for (int j = 0; j < columnas; j++) {
-							c = casillas[i][j];
-							str = c.getNumero() + "";
-							if (c.tieneVecinoSup()) {
-								str += " " + casillas[i - 1][j].getNumero();
-							}
-							if (c.tieneVecinoIzq()) {
-								str += " " + casillas[i][j - 1].getNumero();
-							}
-							if (c.tieneVecinoDer()) {
-								str += " " + casillas[i][j + 1].getNumero();
-							}
-							if (c.tieneVecinoInf()) {
-								str += " " + casillas[i + 1][j].getNumero();
-							}
-							ps.println(str);
-						}
-					}
-
-				} catch (IOException e) {
-					Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_guardar",new Object[]{archivo.getName()}));
-				}
-			} else {
-				Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_permisos", new Object[]{archivo.getName()}));
-			}
+			
+			Util.guardar(archivo, casillas, inicio, fin);
 			parent.leerArchivo(archivo,false);
 			setVisible(false);
 		}
 	}
 
-	@Override
+	
 	public void mouseClicked(MouseEvent e) {}
 
-	@Override
+	
 	public void mousePressed(MouseEvent e) {
 		showPopup(e);
 	}
 
-	@Override
+	
 	public void mouseReleased(MouseEvent e) {
 		showPopup(e);
 	}
 
-	@Override
+	
 	public void mouseEntered(MouseEvent e) {}
 
-	@Override
+	
 	public void mouseExited(MouseEvent e) {}
 	
 	private void showPopup(MouseEvent e){
