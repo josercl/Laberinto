@@ -18,8 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
@@ -259,7 +257,7 @@ public class Principal extends JFrame {
 		final JFrame p=this;
 		final int in=inicio;
 		final int fn=fin;
-		final Principal parent=this;
+		
 		new Thread(new Runnable() {
 			
 			public void run() {

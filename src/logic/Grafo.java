@@ -4,9 +4,9 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
 /**
- * Clase usada para representar el laberinto y encontrar la solución al mismo
+ * Clase usada para representar el laberinto y encontrar la soluciÃ³n al mismo
  * 
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author JosÃ© Rafael Carrero LeÃ³n <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
  * @since 1.6
  */
 public class Grafo {
@@ -22,7 +22,7 @@ public class Grafo {
 	
 	/*
 	 * Agregar un nodo al grado
-	 * @param n El nodo que será agregado al grafo
+	 * @param n El nodo que serï¿½ agregado al grafo
 	 */
 	public void add(Nodo n){
 		this.nodos.add(n);
@@ -30,7 +30,7 @@ public class Grafo {
 	
 	/**
 	 * Obtiene el nodo representado por n en el grafo
-	 * @param nodoNumero El número que representa al nodo
+	 * @param nodoNumero El nÃºmero que representa al nodo
 	 * @return El nodo especificado por n o null en caso de el nodo no exista en el grafo
 	 */
 	public Nodo obtenerNodo(int nodoNumero){
@@ -46,7 +46,7 @@ public class Grafo {
 	 * Revisa si el nodo representado por <code>nodoNumero</code> ya existe en el grafo.
 	 * 
 	 * En caso de que el grafo no contenga el nodo especificado, se agrega a la lista de nodos del grafo
-	 * @param nodoNumero El número del nodo a agregar 
+	 * @param nodoNumero El nÃºmero del nodo a agregar 
 	 * @return El nodo que fue agregado al grafo
 	 */
 	public Nodo procesarAgregar(int nodoNumero){
@@ -61,7 +61,7 @@ public class Grafo {
 	
 	/**
 	 * Revisa la existencia de un nodo dentro del grafo
-	 * @param numeroNodo El número del nodo a buscar
+	 * @param numeroNodo El nÃºmero del nodo a buscar
 	 * @return true si el nodo existe, false en caso contrario 
 	 */
 	public boolean existe(int numeroNodo){

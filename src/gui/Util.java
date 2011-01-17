@@ -10,7 +10,6 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import logic.Casilla;
