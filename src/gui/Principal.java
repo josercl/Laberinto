@@ -13,9 +13,11 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -153,15 +155,9 @@ public class Principal extends JFrame {
 			gmi.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e) {
+					InputStream is= Principal.class.getResourceAsStream("/laberinto/lab" + m + ".txt");
 					
-					URL url = Principal.class.getResource("/laberinto/lab" + m
-							+ ".txt");
-					try {
-						File f = new File(url.toURI());
-						leerArchivo(f, false);
-					} catch (URISyntaxException e1) {
-						e1.printStackTrace();
-					}
+					leerArchivo(is,"lab"+m+".txt", false);
 				}
 			});
 			galeria_laberintos.add(gmi);
@@ -297,14 +293,13 @@ public class Principal extends JFrame {
 		}
 	}
 
-	public void leerArchivo(File archivo,boolean abrirEditor){
-		//tablero.getGraphics().clearRect(0, 0, tablero.getWidth(), tablero.getHeight());
+	public void leerArchivo(InputStream inputStream,String archivo,boolean abrirEditor){
 		String linea="";
 		BufferedReader br;
 		grafo=new Grafo();
 		pintarLaberinto=!abrirEditor;
 		try {
-			br = new BufferedReader(new FileReader(archivo));
+			br = new BufferedReader(new InputStreamReader(inputStream));
 			filas=Integer.parseInt(br.readLine());
 			columnas=Integer.parseInt(br.readLine());
 			inicio=Integer.parseInt(br.readLine());
@@ -330,12 +325,10 @@ public class Principal extends JFrame {
 					nuevo.getVecinos().add(vecinoTemp);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_existe", new Object[]{archivo.getName()}));
 		} catch (NumberFormatException e) {
 			Util.mostrarMensaje(this,rb.getString("mensajes.error.archivo_sintaxis"));
 		} catch (IOException e) {
-			Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_leer",new Object[]{archivo.getName()}));
+			Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_leer",new Object[]{archivo}));
 		}
 
 		if(!abrirEditor){
@@ -344,6 +337,14 @@ public class Principal extends JFrame {
 		}else{
 			editor=new Editor(this,filas, columnas,inicio,fin,grafo);
 			editor.setVisible(true);
+		}
+	}
+	
+	public void leerArchivo(File archivo,boolean abrirEditor){
+		try {
+			this.leerArchivo(new FileInputStream(archivo),archivo.getName(), abrirEditor);
+		} catch (FileNotFoundException e) {
+			Util.mostrarMensaje(this,Util.mensajes("mensajes.error.archivo_no_existe", new Object[]{archivo.getName()}));
 		}
 	}
 
