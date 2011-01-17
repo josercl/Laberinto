@@ -5,21 +5,14 @@ import gui.Util;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Stack;
 import java.util.TreeSet;
-import java.util.Vector;
 
 /**
  * Clase encargada de generar laberintos de forma semi-aleatoria.
  * 
- * @author Jos� Rafael Carrero Le�n <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
  * @since 1.6 
  *
  */
@@ -46,8 +39,8 @@ public class Generador {
 	/**
 	 * Crea el objeto generador
 	 * @param parent Ventana principal donde se muestra los laberintos a resolver
-	 * @param filas El n�mero de filas del laberinto
-	 * @param columnas El n�mero de columnas del laberinto
+	 * @param filas El número de filas del laberinto
+	 * @param columnas El número de columnas del laberinto
 	 */
 	public Generador(Principal parent,int filas,int columnas){
 		this.parent=parent;
@@ -74,6 +67,7 @@ public class Generador {
 	 * El algoritmo hace uso de DFS (Depth First Search) con backtracking,
 	 * asegurando que se puede llegar a cualquier casilla del laberinto sin importar la casilla de inicio
 	 */
+	@SuppressWarnings("unchecked")
 	public void generar(){
 
 		//Conjuntos usados en el algoritmo de generacion
@@ -86,7 +80,7 @@ public class Generador {
 		Casilla vecino=null;
 		
 		//El arreglo direcciones contiene las posibles direcciones que se pueden tomar a partir de cualquier casilla
-		//cada lista de direcciones tendr� a lo sumo 4 valores: arriba,abajo,izquierda y derecha
+		//cada lista de direcciones tendrá a lo sumo 4 valores: arriba,abajo,izquierda y derecha
 		List<Integer> direcciones[]=new ArrayList[filas*columnas];
 		for(int i=0;i<filas;i++){
 			for(int j=0;j<columnas;j++){
@@ -118,8 +112,6 @@ public class Generador {
 			int numero=actual.getNumero();
 			filaActual=numero/columnas;
 			columnaActual=numero%columnas;
-			
-			List<Integer> vecinos=direcciones[numero];
 			
 			vecino=actual;
 			while(visitados.contains(vecino) && direcciones[numero].size()!=0){
@@ -174,32 +166,32 @@ public class Generador {
 	}
 	
 	/**
-	 * Retorna el numero de filas que tendr� el laberinto generado
-	 * @return cantidad filas que tendr� el laberinto a generar
+	 * Retorna el numero de filas que tendrá el laberinto generado
+	 * @return cantidad filas que tendrá el laberinto a generar
 	 */
 	public int getFilas() {
 		return filas;
 	}
 
 	/**
-	 * Establece el n�mero de filas del laberinto
-	 * @param filas Cantidad de filas que tendr� el laberinto generado
+	 * Establece el número de filas del laberinto
+	 * @param filas Cantidad de filas que tendrá el laberinto generado
 	 */
 	public void setFilas(int filas) {
 		this.filas = filas;
 	}
 
 	/**
-	 * Retorna el numero de columnas que tendr� el laberinto generado
-	 * @return cantidad de columnas que tendr� el laberinto generado
+	 * Retorna el numero de columnas que tendrá el laberinto generado
+	 * @return cantidad de columnas que tendrá el laberinto generado
 	 */
 	public int getColumnas() {
 		return columnas;
 	}
 
 	/**
-	 * Establece el n�mero de columnas del laberinto
-	 * @param columnas cantidad de columnas que tendr� el laberinto generado
+	 * Establece el número de columnas del laberinto
+	 * @param columnas cantidad de columnas que tendrá el laberinto generado
 	 */
 	public void setColumnas(int columnas) {
 		this.columnas = columnas;

@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 /**
  * Representa un nodo dentro de un {@link Grafo}
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author JosÃ© Rafael Carrero LeÃ³n <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
  * @since 1.6
  *
  */
@@ -15,8 +15,8 @@ public class Nodo implements Comparable<Nodo>{
 	private TreeSet<Nodo> vecinos;
 	
 	/**
-	 * Crea un nodo representado por el número n. El nodo es creado con un listado vacío de nodos vecinos
-	 * @param n El número que representa a este nodo dentro del grafo
+	 * Crea un nodo representado por el nÃºmero n. El nodo es creado con un listado vacÃ­o de nodos vecinos
+	 * @param n El nÃºmero que representa a este nodo dentro del grafo
 	 */
 	public Nodo(int n){
 		this.numero=n;
@@ -24,7 +24,7 @@ public class Nodo implements Comparable<Nodo>{
 	}
 
 	/**
-	 * Devuelve el nodo "padre" de este objeto. Es usado en la creación de caminos
+	 * Devuelve el nodo "padre" de este objeto. Es usado en la creaciÃ³n de caminos
 	 * @return El nodo padre
 	 */
 	public Nodo getPadre() {
@@ -32,7 +32,7 @@ public class Nodo implements Comparable<Nodo>{
 	}
 
 	/**
-	 * Establece el nodo "padre" de este objeto. Es usado en la cración de caminos
+	 * Establece el nodo "padre" de este objeto. Es usado en la craciÃ³n de caminos
 	 * @param padre El nodo padre
 	 */
 	public void setPadre(Nodo padre) {
@@ -40,8 +40,8 @@ public class Nodo implements Comparable<Nodo>{
 	}
 
 	/**
-	 * Obtiene el número representativo del nodo dentro del grafo.
-	 * @return El número que representa al nodo en el grafo
+	 * Obtiene el nÃºmero representativo del nodo dentro del grafo.
+	 * @return El nÃºmero que representa al nodo en el grafo
 	 */
 	public int getNumero() {
 		return numero;
@@ -49,7 +49,7 @@ public class Nodo implements Comparable<Nodo>{
 
 	/**
 	 * <p>Compara 2 nodos para ver si son iguales.</p>
-	 * <p>Un nodo se considera igual a otro nodo si el número que los representa es el mismo</p>
+	 * <p>Un nodo se considera igual a otro nodo si el nÃºmero que los representa es el mismo</p>
 	 * @param nodo2
 	 * @return true si los numeros representativos de los nodos son iguales, false en caso contrario
 	 */
@@ -63,7 +63,7 @@ public class Nodo implements Comparable<Nodo>{
 
 	/**
 	 * Compara 2 nodos para establecer un orden entre los mismos
-	 * @param otroNodo El nodo con el que se realiza la comparación
+	 * @param otroNodo El nodo con el que se realiza la comparaciÃ³n
 	 * @return <ul><li>&lt;1 si el nodo es menor que otroNodo</li>
 	 * <li>0 si son iguales</li>
 	 * <li>&gt1 si otroNodo es mayor 
@@ -74,7 +74,7 @@ public class Nodo implements Comparable<Nodo>{
 
 	/**
 	 * Devuelve un conjunto de los nodos adyacentes en el grafo.
-	 * El número máximo de vecinos para un nodo dentro de un laberinto siempre será 4
+	 * El nÃºmero mÃ¡ximo de vecinos para un nodo dentro de un laberinto siempre serÃ¡ 4
 	 * @return Un conjunto de los nodos adyacentes en el grafo
 	 */
 	public TreeSet<Nodo> getVecinos() {
