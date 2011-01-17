@@ -19,7 +19,7 @@ import java.util.Vector;
 /**
  * Clase encargada de generar laberintos de forma semi-aleatoria.
  * 
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author Josï¿½ Rafael Carrero Leï¿½n <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
  * @since 1.6 
  *
  */
@@ -46,8 +46,8 @@ public class Generador {
 	/**
 	 * Crea el objeto generador
 	 * @param parent Ventana principal donde se muestra los laberintos a resolver
-	 * @param filas El número de filas del laberinto
-	 * @param columnas El número de columnas del laberinto
+	 * @param filas El nï¿½mero de filas del laberinto
+	 * @param columnas El nï¿½mero de columnas del laberinto
 	 */
 	public Generador(Principal parent,int filas,int columnas){
 		this.parent=parent;
@@ -86,7 +86,7 @@ public class Generador {
 		Casilla vecino=null;
 		
 		//El arreglo direcciones contiene las posibles direcciones que se pueden tomar a partir de cualquier casilla
-		//cada lista de direcciones tendrá a lo sumo 4 valores: arriba,abajo,izquierda y derecha
+		//cada lista de direcciones tendrï¿½ a lo sumo 4 valores: arriba,abajo,izquierda y derecha
 		List<Integer> direcciones[]=new ArrayList[filas*columnas];
 		for(int i=0;i<filas;i++){
 			for(int j=0;j<columnas;j++){
@@ -168,38 +168,38 @@ public class Generador {
 		}
 		
 		//guardamos el laberinto generado en un archivo temporal y lo cargamos en la pantalla principal
-		File archivo=new File(System.getProperty("java.io.tmpdir")+"lab.txt");
+		File archivo=new File(System.getProperty("java.io.tmpdir")+File.separator+"lab.txt");
 		Util.guardar(archivo, casillas, 0, filas*columnas-1);
 		parent.leerArchivo(archivo,false);
 	}
 	
 	/**
-	 * Retorna el numero de filas que tendrá el laberinto generado
-	 * @return cantidad filas que tendrá el laberinto a generar
+	 * Retorna el numero de filas que tendrï¿½ el laberinto generado
+	 * @return cantidad filas que tendrï¿½ el laberinto a generar
 	 */
 	public int getFilas() {
 		return filas;
 	}
 
 	/**
-	 * Establece el número de filas del laberinto
-	 * @param filas Cantidad de filas que tendrá el laberinto generado
+	 * Establece el nï¿½mero de filas del laberinto
+	 * @param filas Cantidad de filas que tendrï¿½ el laberinto generado
 	 */
 	public void setFilas(int filas) {
 		this.filas = filas;
 	}
 
 	/**
-	 * Retorna el numero de columnas que tendrá el laberinto generado
-	 * @return cantidad de columnas que tendrá el laberinto generado
+	 * Retorna el numero de columnas que tendrï¿½ el laberinto generado
+	 * @return cantidad de columnas que tendrï¿½ el laberinto generado
 	 */
 	public int getColumnas() {
 		return columnas;
 	}
 
 	/**
-	 * Establece el número de columnas del laberinto
-	 * @param columnas cantidad de columnas que tendrá el laberinto generado
+	 * Establece el nï¿½mero de columnas del laberinto
+	 * @param columnas cantidad de columnas que tendrï¿½ el laberinto generado
 	 */
 	public void setColumnas(int columnas) {
 		this.columnas = columnas;

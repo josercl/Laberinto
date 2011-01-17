@@ -11,7 +11,6 @@ import javax.swing.SwingUtilities;
 
 public class Main{
 	public static void main(String [] args){
-		
 		try{
 			Util.resource=ResourceBundle.getBundle("resources.textos", Locale.getDefault());
 		}catch(MissingResourceException mre){
