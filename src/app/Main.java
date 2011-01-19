@@ -17,7 +17,7 @@ public class Main {
             Util.resource = ResourceBundle.getBundle("resources.textos", Locale.getDefault());
         } catch (MissingResourceException mre) {
             Locale.setDefault(new Locale("en"));
-            Util.resource = ResourceBundle.getBundle("resources.textos", Locale.getDefault());
+            Util.resource = ResourceBundle.getBundle("resources.textos", Locale.getDefault()); 
         }
 
         try {

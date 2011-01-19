@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -9,15 +11,15 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Tablero extends JPanel {
 
-	private Vector<Linea> lineas;
-	private Vector<Paso> pasos;
+	private List<Linea> lineas;
+	private List<Paso> pasos;
 	private Circulo inicio;
 	private Circulo fin;
 	
 	public Tablero(){
 		super();
-		lineas=new Vector<Linea>(0);
-		pasos=new Vector<Paso>(0);
+		lineas=new ArrayList<Linea>();
+		pasos=new ArrayList<Paso>();
 		setBackground(Color.white);
 	}
 	
@@ -65,7 +67,7 @@ public class Tablero extends JPanel {
 		//g.translate(0,0);
 	}
 
-	public Vector<Linea> getLineas() {
+	public List<Linea> getLineas() {
 		return lineas;
 	}
 
@@ -73,7 +75,7 @@ public class Tablero extends JPanel {
 		this.lineas = lineas;
 	}
 
-	public Vector<Paso> getPasos() {
+	public List<Paso> getPasos() {
 		return pasos;
 	}
 
@@ -98,8 +100,8 @@ public class Tablero extends JPanel {
 	}
 
 	public void limpiar() {
-		lineas.removeAllElements();
-		pasos.removeAllElements();
+		lineas.clear();
+		pasos.clear();
 		setInicio(null);
 		setFin(null);
 	}

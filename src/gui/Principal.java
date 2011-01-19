@@ -81,7 +81,7 @@ public class Principal extends JFrame {
 
 		dibujar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tableroPrint.getPasos().removeAllElements();
+				tableroPrint.getPasos().clear();
 				//dibujarTablero();
 				repaint();
 			}
