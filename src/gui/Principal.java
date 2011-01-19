@@ -355,7 +355,7 @@ public class Principal extends JFrame {
 	}
 	
 	private int[][] preguntarFilasColumnas(){
-		String cString,fString=JOptionPane.showInputDialog (rb.getString("editor.prompt.filas"), "2");
+		String cString=null,fString=JOptionPane.showInputDialog (rb.getString("editor.prompt.filas"), "2");
 		int filas=2;
 		int columnas=2;
 		int[][] resultados=new int[1][2];
@@ -368,12 +368,16 @@ public class Principal extends JFrame {
 				columnas=Integer.parseInt(cString);
 				resultados[0][1]=columnas;
 			}catch(NumberFormatException nfe){
+                            if(cString!=null){
 				error=true;
 				JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_columnas"),"Error",JOptionPane.ERROR_MESSAGE);
+                            }
 			}
 		}catch(NumberFormatException nfe){
+                    if(fString!=null){
 			error=true;
 			JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_filas"),"Error",JOptionPane.ERROR_MESSAGE);
+                    }
 		}
 		if(error){
 			resultados=null;
