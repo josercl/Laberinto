@@ -151,7 +151,6 @@ public class Editor extends JDialog implements MouseListener{
 				final int fila = i;
 				final int columna = j;
 
-				//if (i != filas - 1) {
 					abajo = new JButton();
 					abajo.setBackground(Color.black);
 					
@@ -182,9 +181,7 @@ public class Editor extends JDialog implements MouseListener{
 					});
 
 					casillaPanel.add(abajo, BorderLayout.SOUTH);
-				//}
 
-				//if (j != columnas - 1) {
 					derecha = new JButton();
 					derecha.setBackground(Color.black);
 					
@@ -215,7 +212,6 @@ public class Editor extends JDialog implements MouseListener{
 					});
 
 					casillaPanel.add(derecha, BorderLayout.EAST);
-				//}
 
 				casillas_panel.add(casillaPanel);
 			}

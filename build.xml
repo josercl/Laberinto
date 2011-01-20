@@ -1,6 +1,5 @@
 <project name="Laberinto" default="run" basedir=".">
-	<description>
-	</description>
+	<description></description>
 	<property name="src" location="src" />
 	<property name="build" location="bin" />
 	<property name="dist" location="dist" />
@@ -11,7 +10,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="Compile the source">
-		<javac srcdir="${src}" destdir="${build}" />
+		<javac srcdir="${src}" destdir="${build}" excludes="*.txt,*.properties"/>
 		<copy todir="${build}">
 			<fileset dir="${src}" includes="laberinto/*" />
 			<fileset dir="${src}" includes="resources/*" />
@@ -22,13 +21,13 @@
 		<mkdir dir="${dist}" />
 		<jar jarfile="${dist}/Laberinto.jar" basedir="${build}">
 			<manifest>
-				<attribute name="Main-Class" value="app.Main"/>
+				<attribute name="Main-Class" value="app.Main" />
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="run" depends="jar">
-		<java jar="${dist}/Laberinto.jar" fork="true"/>
+		<java jar="${dist}/Laberinto.jar" fork="true" />
 	</target>
 
 	<target name="clean" description="clean up">
