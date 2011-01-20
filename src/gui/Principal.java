@@ -44,9 +44,9 @@ public class Principal extends JFrame {
 	private JButton resolver,dibujar;
 
 	final int margen=20;
-	int ancho_celda=Util.ancho_celda; //ancho de cada "celda" del laberinto
-	int alto_celda=Util.alto_celda; //alto de cada "celda" del laberinto
-	int radio_punto=Util.radio_punto;
+	int ancho_celda=0; //ancho de cada "celda" del laberinto
+	int alto_celda=0; //alto de cada "celda" del laberinto
+	int radio_punto=0;
 
 	private boolean pintarLaberinto=false;
 	int inicio,fin,filas,columnas,nodos[][];
@@ -252,35 +252,37 @@ public class Principal extends JFrame {
 		final int in=inicio;
 		final int fn=fin;
 		
-		new Thread(new Runnable() {
-			
-			public void run() {
+		if(nodos!=null){
+			new Thread(new Runnable() {
 				
-				Vector<Nodo> resultado=grafo.DFS(in, fn);
-
-				if(resultado!=null){
-					for(int i=resultado.size()-1;i>=0;i--){
-						int numero=resultado.get(i).getNumero();
-
-						int fila=numero/columnas;
-						int columna=numero%columnas;
-						
-						tableroPrint.agregarPaso(columna*ancho_celda, fila*alto_celda, ancho_celda, alto_celda);
-						
-						tableroPrint.repaint();
-
-						try {
-							Thread.sleep(38);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				public void run() {
+					
+					Vector<Nodo> resultado=grafo.DFS(in, fn);
+	
+					if(resultado!=null){
+						for(int i=resultado.size()-1;i>=0;i--){
+							int numero=resultado.get(i).getNumero();
+	
+							int fila=numero/columnas;
+							int columna=numero%columnas;
+							
+							tableroPrint.agregarPaso(columna*ancho_celda, fila*alto_celda, ancho_celda, alto_celda);
+							
+							tableroPrint.repaint();
+	
+							try {
+								Thread.sleep(20);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
+					}else{
+						JOptionPane.showMessageDialog(p, rb.getString("mensajes.no_solucion"));
 					}
-				}else{
-					JOptionPane.showMessageDialog(p, rb.getString("mensajes.no_solucion"));
 				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 
 	private void cargarLaberinto(boolean abrirEditor){
@@ -348,7 +350,7 @@ public class Principal extends JFrame {
 
 	private void mostrarEditor(){
 		int[][] datos=preguntarFilasColumnas();
-		if(datos!=null){
+		if(datos!=null && datos[0][0]!=-1 && datos[0][1]!=-1){
 			editor=new Editor(this,datos[0][0], datos[0][1]);
 			editor.setVisible(true);
 		}
@@ -359,6 +361,8 @@ public class Principal extends JFrame {
 		int filas=2;
 		int columnas=2;
 		int[][] resultados=new int[1][2];
+		resultados[0][0]=-1;
+		resultados[0][1]=-1;
 		boolean error=false;
 		try{
 			filas=Integer.parseInt(fString);
@@ -368,16 +372,16 @@ public class Principal extends JFrame {
 				columnas=Integer.parseInt(cString);
 				resultados[0][1]=columnas;
 			}catch(NumberFormatException nfe){
-                            if(cString!=null){
-				error=true;
-				JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_columnas"),"Error",JOptionPane.ERROR_MESSAGE);
-                            }
+				if(cString!=null){
+					error=true;
+					JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_columnas"),"Error",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}catch(NumberFormatException nfe){
-                    if(fString!=null){
-			error=true;
-			JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_filas"),"Error",JOptionPane.ERROR_MESSAGE);
-                    }
+			if(fString!=null){
+				error=true;
+				JOptionPane.showMessageDialog(this, rb.getString("mensajes.error_leyendo_filas"),"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		if(error){
 			resultados=null;
@@ -414,7 +418,7 @@ public class Principal extends JFrame {
 
 	private void generar(){
 		int[][]datos=preguntarFilasColumnas();
-		if(datos!=null){
+		if(datos!=null && datos[0][0]!=-1 && datos[0][1]!=-1){
 			generador.setFilas(datos[0][0]);
 			generador.setColumnas(datos[0][1]);
 			generador.init();

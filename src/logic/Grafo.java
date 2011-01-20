@@ -6,7 +6,7 @@ import java.util.Vector;
 /**
  * Clase usada para representar el laberinto y encontrar la solución al mismo
  * 
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author José Rafael Carrero León &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
  * @since 1.6
  */
 public class Grafo {
@@ -22,7 +22,7 @@ public class Grafo {
 	
 	/*
 	 * Agregar un nodo al grado
-	 * @param n El nodo que ser� agregado al grafo
+	 * @param n El nodo que será agregado al grafo
 	 */
 	public void add(Nodo n){
 		this.nodos.add(n);

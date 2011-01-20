@@ -12,7 +12,7 @@ import java.util.TreeSet;
 /**
  * Clase encargada de generar laberintos de forma semi-aleatoria.
  * 
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author José Rafael Carrero León &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
  * @since 1.6 
  *
  */

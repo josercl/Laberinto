@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 /**
  * Representa un nodo dentro de un {@link Grafo}
- * @author José Rafael Carrero León <a href="mailto:josercl@gmail.com">&lt;josercl@gmail.com&gt;</a>
+ * @author José Rafael Carrero León &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
  * @since 1.6
  *
  */
@@ -61,12 +61,9 @@ public class Nodo implements Comparable<Nodo>{
 		return numero+"";
 	}
 
-	/**
-	 * Compara 2 nodos para establecer un orden entre los mismos
-	 * @param otroNodo El nodo con el que se realiza la comparación
-	 * @return <ul><li>&lt;1 si el nodo es menor que otroNodo</li>
-	 * <li>0 si son iguales</li>
-	 * <li>&gt1 si otroNodo es mayor 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Nodo otroNodo) {
 		return numero-otroNodo.getNumero();
